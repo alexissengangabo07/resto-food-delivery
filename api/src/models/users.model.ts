@@ -13,7 +13,10 @@ const usersSchema = new Schema({
         type: String,
         required: true
     },
-    role: String
+    role: {
+        type: String,
+        default: 'client'
+    }
 }, {
     timestamps: true
 });
