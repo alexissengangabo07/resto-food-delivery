@@ -1,13 +1,13 @@
 import { Router } from "express";
-import * as UsersController from "../controllers/users.controller";
+import * as CategoriesController from "../controllers/categories.controller";
 
 const route = Router();
 
-route.get('/', UsersController.getUsers)
-    .get('/:id', UsersController.getUser)
-    .post('/', UsersController.createUser)
-    .patch('/:id', UsersController.updateUser)
-    .delete('/:id', UsersController.deleteUser);
+route.get('/', CategoriesController.getCategories)
+    .get('/:id', CategoriesController.getCategory)
+    .post('/', CategoriesController.createCategory)
+    .patch('/:id', CategoriesController.updateCategory)
+    .delete('/:id', CategoriesController.deleteCategory);
 
 
 export default route;

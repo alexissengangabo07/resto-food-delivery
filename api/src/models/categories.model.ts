@@ -4,10 +4,6 @@ const categoriesSchema = new Schema({
     title: {
         type: String,
         required: true
-    },
-    categorieId: {
-        type: Schema.Types.ObjectId,
-        ref: "categories"
     }
 }, {
     timestamps: true
