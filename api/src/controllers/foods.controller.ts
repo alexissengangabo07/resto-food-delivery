@@ -40,6 +40,13 @@ export const createFood: RequestHandler<unknown, unknown, CreateFoodBody, unknow
     const { title, description, categoryId } = req.body;
 
     try {
+        if (!title) {
+            return res.status(400).json({ message: 'title is required' });
+        }
+        if (!categoryId) {
+            return res.status(400).json({ message: 'categoryId is required' });
+        }
+
         const foods = await foodsModel.create({
             title, description, categoryId
         });

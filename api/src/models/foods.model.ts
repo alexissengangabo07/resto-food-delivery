@@ -8,7 +8,8 @@ const foodsSchema = new Schema({
     description: String,
     categoryId: {
         type: Schema.Types.ObjectId,
-        ref: "categories"
+        ref: "categories",
+        required: true
     }
 }, {
     timestamps: true

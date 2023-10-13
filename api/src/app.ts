@@ -18,7 +18,7 @@ app.use(cors({
 app.use(morgan('dev'));
 app.use('/api/users', userRoute);
 app.use('/api/category', categoryRoute);
-app.use('/api/food', categoryRoute);
+app.use('/api/food', foodRoute);
 app.use(errorHandler);
 
 export default app;
