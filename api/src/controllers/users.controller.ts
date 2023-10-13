@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt';
 import usersModel from "../models/users.model";
 
 export const getUsers: RequestHandler = async (req, res, next) => {
@@ -39,9 +40,11 @@ interface CreateUserBody {
 
 export const createUser: RequestHandler<unknown, unknown, CreateUserBody, unknown> = async (req, res, next) => {
     const { username, email, password, role } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
         const users = await usersModel.create({
-            username, email, password, role
+            username, email, password: hashedPassword, role
         });
         res.status(201).json(users);
     } catch (error) {
