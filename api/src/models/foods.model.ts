@@ -10,6 +10,16 @@ const foodsSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "categories",
         required: true
+    },
+    image: {
+        public_id: {
+            type: String,  
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        }
     }
 }, {
     timestamps: true
