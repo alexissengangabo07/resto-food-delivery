@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import mongoose from "mongoose";
 import foodsModel from "../models/foods.model";
+import cloudinary from '../utils/cloudinary';
 
 export const getFoods: RequestHandler = async (req, res, next) => {
     try {
@@ -31,24 +32,42 @@ export const getFood: RequestHandler = async (req, res, next) => {
 }
 
 interface CreateFoodBody {
-    title: string,
+    name: string,
+    price: number,
+    image: {
+        public_id: string,
+        url: string
+    },
     description?: string,
     categoryId: string
 }
 
 export const createFood: RequestHandler<unknown, unknown, CreateFoodBody, unknown> = async (req, res, next) => {
-    const { title, description, categoryId } = req.body;
+    const { name, price, image, description, categoryId } = req.body;
 
     try {
-        if (!title) {
-            return res.status(400).json({ message: 'title is required' });
+        if (!name) {
+            return res.status(400).json({ message: 'Food name is required' });
         }
         if (!categoryId) {
             return res.status(400).json({ message: 'categoryId is required' });
         }
 
+        const imageResult = await cloudinary.uploader.upload(image, {
+            folder: "foods",
+            // width: 300,
+            // crop: "scale"
+        });
+
         const foods = await foodsModel.create({
-            title, description, categoryId
+            name,
+            price,
+            image: {
+                public_id: imageResult.public_id,
+                url: imageResult.secure_url
+            },
+            description,
+            categoryId
         });
         res.status(201).json(foods);
     } catch (error) {
@@ -57,7 +76,8 @@ export const createFood: RequestHandler<unknown, unknown, CreateFoodBody, unknow
 }
 
 interface UpdateFoodBody {
-    title?: string,
+    name?: string,
+    price?: number,
     description?: string,
     categoryId?: string
 }
@@ -67,7 +87,7 @@ interface UpdateFoodParams {
 }
 
 export const updateFood: RequestHandler<UpdateFoodParams, unknown, UpdateFoodBody, unknown> = async (req, res, next) => {
-    const { title, description, categoryId } = req.body;
+    const { name, price, description, categoryId } = req.body;
     const foodId = req.params.id;
 
     try {
@@ -81,7 +101,7 @@ export const updateFood: RequestHandler<UpdateFoodParams, unknown, UpdateFoodBod
             return res.status(404).json({ message: 'Food not found' });
         }
 
-        if (!title) {
+        if (!name) {
             return res.status(400).json({ message: 'Food name is required' });
         }
 

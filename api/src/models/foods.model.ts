@@ -1,8 +1,12 @@
 import { InferSchemaType, model, Schema } from "mongoose";
 
 const foodsSchema = new Schema({
-    title: {
+    name: {
         type: String,
+        required: true
+    },
+    price: {
+        type: Number,
         required: true
     },
     description: String,
@@ -13,7 +17,7 @@ const foodsSchema = new Schema({
     },
     image: {
         public_id: {
-            type: String,  
+            type: String,
             required: true
         },
         url: {
